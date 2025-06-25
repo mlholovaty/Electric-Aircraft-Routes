@@ -435,5 +435,8 @@ def update_route(from_id, to_id):
 
     return children, output
 
+app = dash.Dash(__name__)
+server = app.server
+
 if __name__ == "__main__":
     app.run(debug=False, port=8050, host="0.0.0.0")
