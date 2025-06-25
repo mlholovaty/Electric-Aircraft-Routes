@@ -35,7 +35,7 @@ Vm = V*1.852/60 # Convert Knots to km/min
 # -------------------------------------------------
 # Load the coordinate table once at start-up
 # -------------------------------------------------
-airports = pd.read_csv("ohio_airports_coordinates.csv")
+airports = pd.read_csv("airports_coordinates.csv")
 
 coords = airports.set_index("ID")[["Latitude (Decimal)",
                                    "Longitude (Decimal)"]]
