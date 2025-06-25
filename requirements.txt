@@ -1,5 +1,4 @@
 pandas
-heapq
 collections
 itertools
 dash_leaflet
