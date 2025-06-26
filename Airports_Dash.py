@@ -356,10 +356,17 @@ top_bar = html.Div(
     }
 )
 
+legend = html.Div(
+    [
+        html.Div("Green markers: Recharge nodes", style={"textAlign": "left"}),
+        html.Div("Blue markers: Airports", style={"textAlign": "left"})
+    ]
+    )
 
 def build_layout() -> html.Div:
     return html.Div([
         title,
+        legend,
         top_bar,
         
         dl.Map(
