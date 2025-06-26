@@ -356,45 +356,46 @@ top_bar = html.Div(
     }
 )
 
-app.layout = html.Div([
-    title,
-    top_bar,
+
+def build_layout() -> html.Div:
+    return html.Div([
+        title,
+        top_bar,
+        
+        dl.Map(
+            id="map",
+            center=[coords["Latitude (Decimal)"].mean(), coords["Longitude (Decimal)"].mean()],
+            zoom=8,
+            style={'width': '100%', 'height': '800px'},
+            children=[
+                dl.LayersControl([
+                    dl.BaseLayer(dl.TileLayer(), name="OSM", checked=False),
+                    dl.BaseLayer(
+                        dl.TileLayer(
+                            url="https://tiles.arcgis.com/tiles/ssFJjBXIUyZDrSYZ/arcgis/rest/services/VFR_Sectional/MapServer/tile/{z}/{y}/{x}",
+                            attribution="FAA VFR Sectional – tiles.arcgis.com"
+                        ), name="FAA VFR", checked=True
+                    ),
+                    dl.Overlay(dl.WMSTileLayer(
+                        url="https://digital.weather.gov/ndfd/wms",
+                        layers="ndfd.conus.windspd",
+                        format="image/png",
+                        transparent=True,
+                        attribution="NWS Wind Speed"
+                    ), name="Wind Speed", checked=False),
+                    dl.Overlay(dl.WMSTileLayer(
+                        url="https://digital.weather.gov/ndfd/wms",
+                        layers="ndfd.conus.winddir",
+                        format="image/png",
+                        transparent=True,
+                        attribution="NWS Wind Direction"
+                    ), name="Wind Direction", checked=False),
+                    dl.LayerGroup(id="route-layer", children=all_markers)
+                ]), speed_legend, dir_legend
     
-    dl.Map(
-        id="map",
-        center=[coords["Latitude (Decimal)"].mean(), coords["Longitude (Decimal)"].mean()],
-        zoom=8,
-        style={'width': '100%', 'height': '800px'},
-        children=[
-            dl.LayersControl([
-                dl.BaseLayer(dl.TileLayer(), name="OSM", checked=False),
-                dl.BaseLayer(
-                    dl.TileLayer(
-                        url="https://tiles.arcgis.com/tiles/ssFJjBXIUyZDrSYZ/arcgis/rest/services/VFR_Sectional/MapServer/tile/{z}/{y}/{x}",
-                        attribution="FAA VFR Sectional – tiles.arcgis.com"
-                    ), name="FAA VFR", checked=True
-                ),
-                dl.Overlay(dl.WMSTileLayer(
-                    url="https://digital.weather.gov/ndfd/wms",
-                    layers="ndfd.conus.windspd",
-                    format="image/png",
-                    transparent=True,
-                    attribution="NWS Wind Speed"
-                ), name="Wind Speed", checked=False),
-                dl.Overlay(dl.WMSTileLayer(
-                    url="https://digital.weather.gov/ndfd/wms",
-                    layers="ndfd.conus.winddir",
-                    format="image/png",
-                    transparent=True,
-                    attribution="NWS Wind Direction"
-                ), name="Wind Direction", checked=False),
-                dl.LayerGroup(id="route-layer", children=all_markers)
-            ]), speed_legend, dir_legend
-
-        ]
-    )
-
-])
+            ]
+        )
+    ])
 
 app.layout = build_layout()
 print(">>> LAYOUT SET:", type(app.layout))                # ②
