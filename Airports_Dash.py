@@ -32,12 +32,6 @@ V = Vt+Vw
 Vm = V*1.852/60 # Convert Knots to km/min
 
 # -------------------------------------------------
-# Load the app at start-up
-# -------------------------------------------------
-app = dash.Dash(__name__)
-server = app.server
-
-# -------------------------------------------------
 # Load the coordinate table once at start-up
 # -------------------------------------------------
 airports = pd.read_csv("airports_coordinates.csv")
@@ -314,8 +308,11 @@ dir_legend = html.Div(
 # -------------------------------------------------
 # Create the Dash app
 # -------------------------------------------------
+app = dash.Dash(__name__, suppress_callback_exceptions=True)
+server = app.server
 
-app = dash.Dash(__name__)
+print(">>> IMPORT OK – we are inside Airports_Dash.py")   # ①
+
 app.title = "Electric Aircraft Route Map"
 
 # -------------------- TITLE --------------------
@@ -398,6 +395,10 @@ app.layout = html.Div([
     )
 
 ])
+
+app.layout = build_layout()
+print(">>> LAYOUT SET:", type(app.layout))                # ②
+
 
 @app.callback(
     [Output("route-layer", "children"), Output("output-text", "children")],
