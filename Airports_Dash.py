@@ -31,6 +31,11 @@ Vt = Vc * rho0/rho
 V = Vt+Vw
 Vm = V*1.852/60 # Convert Knots to km/min
 
+# -------------------------------------------------
+# Load the app at start-up
+# -------------------------------------------------
+app = dash.Dash(__name__)
+server = app.server
 
 # -------------------------------------------------
 # Load the coordinate table once at start-up
@@ -434,9 +439,6 @@ def update_route(from_id, to_id):
 
 
     return children, output
-
-app = dash.Dash(__name__)
-server = app.server
 
 if __name__ == "__main__":
     app.run(debug=False, port=8050, host="0.0.0.0")
